@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname, useSearchParams } from "next/navigation" 
 
-import { LayoutDashboard, Receipt, Wallet, Settings, LogOut } from "lucide-react"
+import { LayoutDashboard, Receipt, Wallet, WalletCards, Settings, LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 const menuItems = [
@@ -32,7 +32,8 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="p-6 h-16 flex items-center border-b border-zinc-800">
         <h1 className="text-xl font-bold tracking-tighter text-emerald-500 flex items-center gap-2">
-          💰 FinTrack
+          <WalletCards className="h-6 w-6" />
+          FinTrack
         </h1>
       </div>
 
@@ -60,16 +61,6 @@ export default function Sidebar() {
           )
         })}
       </nav>
-
-      {/* Sidebar Footer */}
-      <div className="p-4 border-t border-zinc-800">
-        <form action="/auth/signout" method="post">
-          <Button variant="ghost" className="w-full justify-start gap-3 text-red-400 hover:text-red-300 hover:bg-red-900/20">
-            <LogOut size={20} />
-            Sair
-          </Button>
-        </form>
-      </div>
     </aside>
   )
 }

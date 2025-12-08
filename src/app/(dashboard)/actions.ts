@@ -218,3 +218,23 @@ export async function updateTransaction(formData: FormData) {
     revalidatePath('/')
     revalidatePath('/transactions')
 }
+
+export async function updateProfile(formData: FormData) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return
+
+  const fullName = formData.get('fullName') as string
+
+  const { error } = await supabase
+    .from('profiles')
+    .update({ full_name: fullName })
+    .eq('id', user.id)
+
+  if (error) {
+    throw new Error("Erro ao atualizar perfil")
+  }
+
+  revalidatePath('/settings')
+  revalidatePath('/') 
+}
