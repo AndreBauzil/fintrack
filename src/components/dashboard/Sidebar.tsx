@@ -7,7 +7,7 @@ import { LayoutDashboard, Receipt, Wallet, WalletCards, Settings, LogOut } from 
 import { Button } from "@/components/ui/button"
 
 const menuItems = [
-  { icon: LayoutDashboard, label: "Visão Geral", href: "/" },
+  { icon: LayoutDashboard, label: "Visão Geral", href: "/dashboard" },
   { icon: Receipt, label: "Transações", href: "/transactions" },
   { icon: Wallet, label: "Carteiras", href: "/workspaces" },
   { icon: Settings, label: "Configurações", href: "/settings" },

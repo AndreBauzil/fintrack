@@ -8,6 +8,7 @@ import { MonthSelector } from "@/components/dashboard/MonthSelector"
 import { CashFlowChart } from "@/components/dashboard/CashFlowChart"
 
 import { DollarSign, TrendingUp, TrendingDown, Activity } from "lucide-react"
+import { HiddenValue } from "@/components/dashboard/HiddenValue"
 
 export default async function DashboardPage({
   searchParams,
@@ -112,7 +113,7 @@ export default async function DashboardPage({
 
           <CardContent>
             <div className={`text-2xl font-bold ${balance >= 0 ? 'text-white' : 'text-red-500'}`}>
-              {formatMoney(balance)}
+              <HiddenValue value={formatMoney(balance)} />
             </div>
             <p className="text-xs text-zinc-500">Neste mês</p>
           </CardContent>
