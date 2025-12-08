@@ -4,16 +4,23 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { PasswordInput } from '@/components/ui/password-input'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import { WalletCards, ArrowRight } from "lucide-react"
 
 interface LoginPageProps {
-  searchParams: Promise<{ message: string }>
+  // Adicionamos 'tab' na tipagem dos parâmetros
+  searchParams: Promise<{ message?: string; tab?: string }>
 }
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
-  const { message } = await searchParams
+  const { message, tab } = await searchParams
+
+  // Lógica para decidir qual aba abrir: se a URL tiver ?tab=register, abre register. Senão, login.
+  const defaultTab = tab === 'register' ? 'register' : 'login'
+
+  const inputStyles = "bg-zinc-950/50 border-zinc-800 focus:border-emerald-500/50 focus:ring-4 focus:ring-emerald-500/10 text-white placeholder:text-zinc-600 h-11 transition-all"
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-zinc-950 text-zinc-100 p-4 selection:bg-emerald-500/30 overflow-hidden relative">
@@ -38,10 +45,9 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           </div>
         </div>
 
-        {/* Tabs */}
-        <Tabs defaultValue="login" className="w-full">
+        {/* Tabs - Agora usa o defaultTab calculado */}
+        <Tabs defaultValue={defaultTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2 mb-6 bg-zinc-900/60 border border-zinc-800/60 h-12 p-1 rounded-xl backdrop-blur-md">
-            
             <TabsTrigger 
               value="login" 
               className="rounded-lg text-zinc-400 data-[state=active]:bg-zinc-800 data-[state=active]:text-white data-[state=active]:shadow-sm hover:text-zinc-200 transition-all duration-200"
@@ -75,20 +81,16 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
                       type="email" 
                       placeholder="exemplo@fintrack.com" 
                       required 
-                      className="bg-zinc-950/50 border-zinc-800 focus:border-emerald-500/50 focus:ring-4 focus:ring-emerald-500/10 text-white placeholder:text-zinc-600 h-11 transition-all" 
+                      className={inputStyles} 
                     />
                   </div>
                   <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor="password" className="text-zinc-300">Senha</Label>
-                      <span className="text-xs text-emerald-500 hover:text-emerald-400 cursor-pointer hover:underline transition-colors">Esqueceu?</span>
-                    </div>
-                    <Input 
-                      id="password" 
-                      name="password" 
-                      type="password" 
-                      required 
-                      className="bg-zinc-950/50 border-zinc-800 focus:border-emerald-500/50 focus:ring-4 focus:ring-emerald-500/10 text-white h-11 transition-all" 
+                    <Label htmlFor="password" className="text-zinc-300">Senha</Label>
+                    <PasswordInput 
+                        id="password" 
+                        name="password" 
+                        required 
+                        className={inputStyles}
                     />
                   </div>
                   
@@ -129,7 +131,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
                       name="fullName" 
                       placeholder="Ex: Andre Bauzil" 
                       required 
-                      className="bg-zinc-950/50 border-zinc-800 focus:border-emerald-500/50 focus:ring-4 focus:ring-emerald-500/10 text-white placeholder:text-zinc-600 h-11 transition-all" 
+                      className={inputStyles} 
                     />
                   </div>
                   <div className="space-y-2">
@@ -140,24 +142,23 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
                       type="email" 
                       placeholder="seu@melhoremail.com"
                       required 
-                      className="bg-zinc-950/50 border-zinc-800 focus:border-emerald-500/50 focus:ring-4 focus:ring-emerald-500/10 text-white placeholder:text-zinc-600 h-11 transition-all" 
+                      className={inputStyles} 
                     />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="password-register" className="text-zinc-300">Senha</Label>
-                    <Input 
-                      id="password-register" 
-                      name="password" 
-                      type="password" 
-                      required 
-                      className="bg-zinc-950/50 border-zinc-800 focus:border-emerald-500/50 focus:ring-4 focus:ring-emerald-500/10 text-white h-11 transition-all" 
+                    <PasswordInput 
+                        id="password-register" 
+                        name="password" 
+                        required 
+                        className={inputStyles}
                     />
                   </div>
                 </CardContent>
                 <CardFooter className="pt-2">
                   <Button 
                     formAction={signup} 
-                    className="w-full bg-zinc-100 hover:bg-white text-zinc-900 font-medium h-11 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                    className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium h-11 shadow-lg shadow-emerald-900/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
                   >
                     Criar Conta Grátis
                   </Button>

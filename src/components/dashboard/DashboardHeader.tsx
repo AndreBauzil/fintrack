@@ -30,7 +30,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { Menu, LayoutDashboard, Receipt, Wallet, Settings, LogOut, Wallet as WalletIcon, User } from "lucide-react"
+import { Menu, LayoutDashboard, Receipt, Wallet, Settings, LogOut, Wallet as WalletIcon, User, EyeOff, Eye } from "lucide-react"
+import { usePrivacy } from "@/contexts/PrivacyContext"
 
 interface DashboardHeaderProps {
   userProfile: any
@@ -43,6 +44,7 @@ export function DashboardHeader({ userProfile, workspaces, currentWorkspaceId }:
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { isPrivacyMode, togglePrivacyMode } = usePrivacy()
 
   // Closes Sidebar on Desktop
   useEffect(() => {
@@ -67,7 +69,7 @@ export function DashboardHeader({ userProfile, workspaces, currentWorkspaceId }:
   const initials = userProfile?.full_name?.split(' ').map((n: string) => n[0]).slice(0, 2).join('').toUpperCase() || 'U'
 
   const menuItems = [
-    { icon: LayoutDashboard, label: "Visão Geral", href: "/" },
+    { icon: LayoutDashboard, label: "Visão Geral", href: "/dashboard" },
     { icon: Receipt, label: "Transações", href: "/transactions" },
     { icon: Wallet, label: "Carteiras", href: "/workspaces" },
     { icon: Settings, label: "Configurações", href: "/settings" },
@@ -141,13 +143,12 @@ export function DashboardHeader({ userProfile, workspaces, currentWorkspaceId }:
                   </Button>
                </form>
             </div>
-
           </SheetContent>
         </Sheet>
 
         <div className="flex items-center gap-2">
-           <span className="text-sm text-zinc-400 hidden lg:inline">Carteira:</span>
-           <Select key={activeValue} value={activeValue} onValueChange={handleWorkspaceChange}>
+          <span className="text-sm text-zinc-400 hidden lg:inline">Carteira:</span>
+          <Select key={activeValue} value={activeValue} onValueChange={handleWorkspaceChange}>
             <SelectTrigger className="w-40 md:w-[200px] bg-zinc-950 border-zinc-700 text-white h-9 focus:ring-emerald-500/20">
               <SelectValue placeholder="Selecione" />
             </SelectTrigger>
@@ -156,7 +157,11 @@ export function DashboardHeader({ userProfile, workspaces, currentWorkspaceId }:
                 <SelectItem key={ws.id} value={ws.id}>{ws.name}</SelectItem>
               ))}
             </SelectContent>
-           </Select>
+          </Select>
+
+          <Button variant="ghost" size="icon" onClick={togglePrivacyMode} className="text-zinc-400 hover:text-white">
+            {isPrivacyMode ? <EyeOff size={20} /> : <Eye size={20} />}
+          </Button>
         </div>
       </div>
       

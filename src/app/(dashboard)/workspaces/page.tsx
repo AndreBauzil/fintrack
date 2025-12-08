@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 import { InviteMemberForm } from "@/components/dashboard/InviteMemberForm"
-import { EditWorkspaceDialog } from "@/components/dashboard/EditWorkspaceDialog" 
+import { WorkspaceMenu } from "@/components/dashboard/WorkspaceMenu"
 import { CreateWorkspaceDialog } from "@/components/dashboard/CreateWorkspaceDialog"
 
 import { Users, Wallet } from "lucide-react"
@@ -17,7 +17,7 @@ export default async function WorkspacesPage() {
   // Workspaces where user belongs
   const { data: myMemberships } = await supabase
     .from('workspace_members')
-    .select('workspace_id, role, workspaces(name)')
+    .select('workspace_id, role, workspaces(name, owner_id)') 
     .eq('user_id', user.id)
 
   if (!myMemberships || myMemberships.length === 0) {
@@ -36,11 +36,13 @@ export default async function WorkspacesPage() {
         .eq('workspace_id', membership.workspace_id)
       
       const wsData = membership.workspaces as any
-
+      const isOwner = wsData?.owner_id === user.id // Verifica se sou o dono real
+  
       return {
         id: membership.workspace_id,
         name: wsData?.name || "Carteira Sem Nome",
         myRole: membership.role,
+        isOwner: isOwner, // Passa essa flag
         members: members || []
       }
     })
@@ -64,13 +66,18 @@ export default async function WorkspacesPage() {
           <CardHeader>
             <div className="flex justify-between items-start">
               <div>
-                <CardTitle className="text-white flex items-center gap-2 text-xl">
+                <CardTitle className="text-white flex items-center justify-between gap-2 text-xl">
+                  <div className="flex items-center gap-2">
                     <Wallet className="text-emerald-500" />
                     {workspace.name}
-                    
-                    {workspace.myRole === 'admin' && (
-                        <EditWorkspaceDialog workspaceId={workspace.id} currentName={workspace.name} />
-                    )}
+                  </div>
+                  
+                  {/* Action Menu */}
+                  <WorkspaceMenu 
+                    workspaceId={workspace.id} 
+                    currentName={workspace.name} 
+                    isOwner={workspace.isOwner}
+                  />
                 </CardTitle>
                 <CardDescription className="text-zinc-400 mt-1">
                   Seu nível de acesso: <span className="text-emerald-400 font-medium capitalize">{workspace.myRole === 'admin' ? 'Administrador' : 'Membro'}</span>
@@ -78,6 +85,7 @@ export default async function WorkspacesPage() {
               </div>
             </div>
           </CardHeader>
+
           <CardContent className="space-y-6">
             <div className="p-4 rounded-lg bg-zinc-950/50 border border-zinc-800">
               <h3 className="text-sm font-medium text-white mb-3">Convidar para "{workspace.name}"</h3>
@@ -115,7 +123,6 @@ export default async function WorkspacesPage() {
                 ))}
               </div>
             </div>
-
           </CardContent>
         </Card>
       ))}

@@ -238,3 +238,67 @@ export async function updateProfile(formData: FormData) {
   revalidatePath('/settings')
   revalidatePath('/') 
 }
+
+export async function leaveWorkspace(formData: FormData) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return
+
+  const workspaceId = formData.get('workspaceId') as string
+
+  // Verify if is OWNER
+  const { data: workspace } = await supabase
+    .from('workspaces')
+    .select('owner_id')
+    .eq('id', workspaceId)
+    .single()
+
+  if (workspace && workspace.owner_id === user.id) {
+    throw new Error("O dono não pode sair. Você deve excluir a carteira.")
+  }
+
+  // Removes own user from list
+  const { error } = await supabase
+    .from('workspace_members')
+    .delete()
+    .eq('workspace_id', workspaceId)
+    .eq('user_id', user.id)
+
+  if (error) {
+    throw new Error("Erro ao sair da carteira.")
+  }
+
+  revalidatePath('/workspaces')
+}
+
+export async function deleteWorkspace(formData: FormData) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return
+
+  const workspaceId = formData.get('workspaceId') as string
+
+  // Verify if is OWNER
+  const { data: workspace } = await supabase
+    .from('workspaces')
+    .select('owner_id')
+    .eq('id', workspaceId)
+    .single()
+
+  if (!workspace || workspace.owner_id !== user.id) {
+    throw new Error("Apenas o dono pode excluir a carteira.")
+  }
+
+  // Delete wallet
+  const { error } = await supabase
+    .from('workspaces')
+    .delete()
+    .eq('id', workspaceId)
+
+  if (error) {
+    console.error("Erro ao deletar:", error)
+    throw new Error("Erro ao excluir carteira (verifique se há dados vinculados).")
+  }
+
+  revalidatePath('/workspaces')
+}
