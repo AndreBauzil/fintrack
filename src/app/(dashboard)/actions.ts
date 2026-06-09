@@ -2,14 +2,25 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import { getExchangeRate } from '@/lib/utils'
 
 export async function createTransaction(formData: FormData) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return
 
-  // Receive ID from wallet, coming from form
   const workspaceId = formData.get('workspaceId') as string
+  const description = formData.get('description') as string
+  const inputAmount = parseFloat(formData.get('amount') as string)
+  const type = formData.get('type') as string
+  const category = formData.get('category') as string
+  const date = formData.get('date') as string
+  const isRecurring = formData.get('isRecurring') === 'on' // Captura o checkbox
+  
+  // Pegamos o dia da data selecionada
+  const dueDate = new Date(date);
+  const dueDay = dueDate.getDate();
+  const currency = formData.get('currency') as string || 'BRL' 
 
   if (!workspaceId) throw new Error("ID da carteira não fornecido")
 
@@ -24,19 +35,27 @@ export async function createTransaction(formData: FormData) {
 
   if (!membership) throw new Error("Você não tem permissão nesta carteira")
 
-  const description = formData.get('description') as string
-  const amount = parseFloat(formData.get('amount') as string)
-  const type = formData.get('type') as string
-  const category = formData.get('category') as string
-  const date = formData.get('date') as string
+  let finalAmount = inputAmount;
+  let originalAmount = null;
+
+  // IF NOT REAL, EXCHANGE
+  if (currency !== 'BRL') {
+    const rate = await getExchangeRate(currency);
+    originalAmount = inputAmount;
+    
+    // Exchange to BRL for currency calculations
+    finalAmount = inputAmount * rate;
+  }
 
   const { error } = await supabase.from('transactions').insert({
     workspace_id: workspaceId,
     description,
-    amount,
+    amount: finalAmount,
     type,
     category,
-    date: date || new Date().toISOString(),
+    date: date,
+    is_recurring: isRecurring, 
+    due_day: dueDay,          
   })
 
   if (error) {

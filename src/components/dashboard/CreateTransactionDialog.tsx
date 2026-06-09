@@ -73,8 +73,29 @@ export function CreateTransactionDialog({ workspaceId }: { workspaceId: string }
           {/* Value and Type */}
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="amount">Valor (R$)</Label>
-              <Input id="amount" name="amount" type="number" step="0.01" placeholder="0,00" required className="bg-zinc-900 border-zinc-700" />
+              <Label htmlFor="amount">Valor</Label>
+              <Input 
+                id="amount" 
+                name="amount" 
+                type="number" 
+                step="0.01" 
+                required 
+                className="bg-zinc-900 border-zinc-700" 
+              />
+            </div>
+            
+            <div className="grid gap-2">
+              <Label htmlFor="currency">Moeda</Label>
+              <Select name="currency" defaultValue="BRL">
+                <SelectTrigger className="bg-zinc-900 border-zinc-700 text-white">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="bg-zinc-900 border-zinc-800 text-white">
+                  <SelectItem value="BRL">🇧🇷 Real (BRL)</SelectItem>
+                  <SelectItem value="USD">🇺🇸 Dólar (USD)</SelectItem>
+                  <SelectItem value="EUR">🇪🇺 Euro (EUR)</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <div className="grid gap-2">
               <Label htmlFor="type">Tipo</Label>
