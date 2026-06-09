@@ -1,4 +1,4 @@
-import { login, signup } from './actions'
+import { login, signup, demoLogin } from './actions' // Importamos o demoLogin aqui
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -7,17 +7,15 @@ import { Label } from "@/components/ui/label"
 import { PasswordInput } from '@/components/ui/password-input'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-import { WalletCards, ArrowRight } from "lucide-react"
+import { WalletCards, ArrowRight, UserCircle2 } from "lucide-react" // Adicionei o ícone UserCircle2
 
 interface LoginPageProps {
-  // Adicionamos 'tab' na tipagem dos parâmetros
   searchParams: Promise<{ message?: string; tab?: string }>
 }
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const { message, tab } = await searchParams
 
-  // Lógica para decidir qual aba abrir: se a URL tiver ?tab=register, abre register. Senão, login.
   const defaultTab = tab === 'register' ? 'register' : 'login'
 
   const inputStyles = "bg-zinc-950/50 border-zinc-800 focus:border-emerald-500/50 focus:ring-4 focus:ring-emerald-500/10 text-white placeholder:text-zinc-600 h-11 transition-all"
@@ -45,7 +43,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           </div>
         </div>
 
-        {/* Tabs - Agora usa o defaultTab calculado */}
+        {/* Tabs */}
         <Tabs defaultValue={defaultTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2 mb-6 bg-zinc-900/60 border border-zinc-800/60 h-12 p-1 rounded-xl backdrop-blur-md">
             <TabsTrigger 
@@ -101,12 +99,31 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
                   )}
                 </CardContent>
 
-                <CardFooter className="pt-2">
+                <CardFooter className="flex-col gap-4 pt-2">
                   <Button 
                     formAction={login} 
                     className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium h-11 shadow-lg shadow-emerald-900/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
                   >
                     Entrar <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+
+                  {/* DIVISOR E BOTÃO DE VISITANTE */}
+                  <div className="relative w-full">
+                    <div className="absolute inset-0 flex items-center">
+                      <span className="w-full border-t border-zinc-800" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                      <span className="bg-zinc-900 px-2 text-zinc-500">Ou acesso rápido</span>
+                    </div>
+                  </div>
+
+                    <Button 
+                      formAction={demoLogin} 
+                      formNoValidate
+                      variant="outline"
+                      className="w-full border-zinc-700 text-zinc-300 hover:bg-zinc-800 hover:text-white h-11 transition-all"
+                    >
+                    <UserCircle2 className="w-4 h-4 mr-2" /> Entrar como Visitante
                   </Button>
                 </CardFooter>
               </form>

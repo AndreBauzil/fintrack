@@ -47,3 +47,19 @@ export async function signup(formData: FormData) {
   revalidatePath('/', 'layout')
   redirect('/dashboard')
 }
+
+export async function demoLogin() {
+  const supabase = await createClient()
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email: 'visitante@fintrack.com',
+    password: 'visitante2026', 
+  })
+
+  if (error) {
+    return redirect('/login?message=Erro no acesso de visitante. Verifique se o usuário foi criado no Supabase.')
+  }
+
+  revalidatePath('/', 'layout')
+  redirect('/dashboard')
+}
