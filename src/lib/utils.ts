@@ -18,3 +18,18 @@ export function formatDateDisplay(dateString: string) {
   }
   return dateString
 }
+
+export async function getExchangeRate(currency: string): Promise<number> {
+  if (currency === 'BRL') return 1;
+  
+  // Busca a cotação (Ex: USD-BRL)
+  const res = await fetch(`https://economia.awesomeapi.com.br/last/${currency}-BRL`, {
+    next: { revalidate: 60 } // Cache por 60 segundos
+  });
+  
+  if (!res.ok) throw new Error("Falha ao obter cotação");
+  
+  const data = await res.json();
+  const pairKey = `${currency}BRL`; // A API retorna chaves como USDBRL
+  return parseFloat(data[pairKey].bid);
+}

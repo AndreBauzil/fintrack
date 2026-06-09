@@ -7,8 +7,8 @@ import { CreateTransactionDialog } from "@/components/dashboard/CreateTransactio
 import { MonthSelector } from "@/components/dashboard/MonthSelector"
 import { CashFlowChart } from "@/components/dashboard/CashFlowChart"
 
-import { DollarSign, TrendingUp, TrendingDown, Activity } from "lucide-react"
-import { HiddenValue } from "@/components/dashboard/HiddenValue"
+import { DollarSign, TrendingUp, TrendingDown, Activity, Repeat } from "lucide-react"
+import { MoneyDisplay } from "@/components/dashboard/MoneyDisplay"
 
 export default async function DashboardPage({
   searchParams,
@@ -88,10 +88,6 @@ export default async function DashboardPage({
     }
   }
 
-  const formatMoney = (value: number) => {
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
-  }
-
   const workspaceId = selectedWorkspaceId 
 
   return (
@@ -110,10 +106,9 @@ export default async function DashboardPage({
             <CardTitle className="text-sm font-medium text-zinc-400">Saldo Mensal</CardTitle>
             <DollarSign className="h-4 w-4 text-emerald-500" />
           </CardHeader>
-
           <CardContent>
             <div className={`text-2xl font-bold ${balance >= 0 ? 'text-white' : 'text-red-500'}`}>
-              <HiddenValue value={formatMoney(balance)} />
+              <MoneyDisplay value={balance} />
             </div>
             <p className="text-xs text-zinc-500">Neste mês</p>
           </CardContent>
@@ -124,9 +119,10 @@ export default async function DashboardPage({
             <CardTitle className="text-sm font-medium text-zinc-400">Receitas</CardTitle>
             <TrendingUp className="h-4 w-4 text-green-500" />
           </CardHeader>
-
           <CardContent>
-            <div className="text-2xl font-bold text-emerald-500">{formatMoney(income)}</div>
+            <div className="text-2xl font-bold text-emerald-500">
+              <MoneyDisplay value={income} />
+            </div>
             <p className="text-xs text-zinc-500">Neste mês</p>
           </CardContent>
         </Card>
@@ -136,9 +132,10 @@ export default async function DashboardPage({
             <CardTitle className="text-sm font-medium text-zinc-400">Despesas</CardTitle>
             <TrendingDown className="h-4 w-4 text-red-500" />
           </CardHeader>
-
           <CardContent>
-            <div className="text-2xl font-bold text-red-500">{formatMoney(expense)}</div>
+            <div className="text-2xl font-bold text-red-500">
+              <MoneyDisplay value={expense} />
+            </div>
             <p className="text-xs text-zinc-500">Neste mês</p>
           </CardContent>
         </Card>
@@ -167,7 +164,6 @@ export default async function DashboardPage({
                 Transações de {new Date(currentMonth + '-02').toLocaleDateString('pt-BR', { month: 'long' })}
              </CardTitle>
            </CardHeader>
-
            <CardContent>
              <div className="space-y-6">
                 {txs.length === 0 ? (
@@ -180,14 +176,24 @@ export default async function DashboardPage({
                            {t.type === 'income' ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
                         </div>
                         <div className="space-y-1 overflow-hidden">
-                          <p className="text-sm font-medium leading-none text-white truncate">{t.description}</p>
+                          <div className="flex items-center gap-1">
+                            <p className="text-sm font-medium leading-none text-white truncate">{t.description}</p>
+                            {t.is_recurring && (
+                              <span title="Transação Recorrente">
+                                <Repeat className="w-3 h-3 text-emerald-500" />
+                              </span>
+                            )}
+                          </div>
                           <p className="text-xs text-zinc-500 capitalize truncate">
                             {t.category} • {formatDateDisplay(t.date)}
                           </p>
                         </div>
                       </div>
                       <div className={`font-medium text-sm whitespace-nowrap ${t.type === 'income' ? 'text-emerald-500' : 'text-red-500'}`}>
-                        {t.type === 'income' ? '+' : '-'}{formatMoney(Number(t.amount))}
+                        <MoneyDisplay 
+                          value={Number(t.amount)} 
+                          prefix={t.type === 'income' ? '+' : '-'} 
+                        />
                       </div>
                     </div>
                   ))

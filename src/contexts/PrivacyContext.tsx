@@ -3,23 +3,22 @@
 import React, { createContext, useContext, useState, useEffect } from "react"
 
 type PrivacyContextType = {
-  isPrivacyMode: boolean
+  isPrivate: boolean 
   togglePrivacyMode: () => void
 }
 
 const PrivacyContext = createContext<PrivacyContextType | undefined>(undefined)
 
 export function PrivacyProvider({ children }: { children: React.ReactNode }) {
-  const [isPrivacyMode, setIsPrivacyMode] = useState(false)
+  const [isPrivate, setIsPrivate] = useState(false) 
 
-  // Loads user's preferences from LocalStorage
   useEffect(() => {
     const savedMode = localStorage.getItem("privacy-mode")
-    if (savedMode === "true") setIsPrivacyMode(true)
+    if (savedMode === "true") setIsPrivate(true)
   }, [])
 
   const togglePrivacyMode = () => {
-    setIsPrivacyMode((prev) => {
+    setIsPrivate((prev) => {
       const newVal = !prev
       localStorage.setItem("privacy-mode", String(newVal))
       return newVal
@@ -27,7 +26,7 @@ export function PrivacyProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <PrivacyContext.Provider value={{ isPrivacyMode, togglePrivacyMode }}>
+    <PrivacyContext.Provider value={{ isPrivate, togglePrivacyMode }}>
       {children}
     </PrivacyContext.Provider>
   )

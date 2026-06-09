@@ -44,7 +44,7 @@ export function DashboardHeader({ userProfile, workspaces, currentWorkspaceId }:
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const { isPrivacyMode, togglePrivacyMode } = usePrivacy()
+  const { isPrivate, togglePrivacyMode } = usePrivacy()
 
   // Closes Sidebar on Desktop
   useEffect(() => {
@@ -105,9 +105,10 @@ export function DashboardHeader({ userProfile, workspaces, currentWorkspaceId }:
                 const smartLink = urlWorkspaceId ? `${item.href}?workspaceId=${urlWorkspaceId}` : item.href
 
                 return (
-                  <Link key={item.href} href={smartLink} onClick={() => setMobileMenuOpen(false)}>
+                  <Link key={item.href} draggable="false" href={smartLink} onClick={() => setMobileMenuOpen(false)}>
                     <Button
                       variant="ghost"
+                      draggable="false"
                       className={`w-full justify-start gap-3 h-12 transition-all ${
                         isActive 
                           ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-[0_0_10px_-5px_rgba(16,185,129,0.5)]" 
@@ -160,7 +161,7 @@ export function DashboardHeader({ userProfile, workspaces, currentWorkspaceId }:
           </Select>
 
           <Button variant="ghost" size="icon" onClick={togglePrivacyMode} className="text-zinc-400 hover:text-white">
-            {isPrivacyMode ? <EyeOff size={20} /> : <Eye size={20} />}
+            {isPrivate ? <EyeOff size={20} /> : <Eye size={20} />}
           </Button>
         </div>
       </div>

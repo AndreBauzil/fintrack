@@ -45,7 +45,7 @@ export default function Sidebar() {
           const smartLink = getHref(item.href)
 
           return (
-            <Link key={item.href} href={smartLink}>
+            <Link key={item.href} draggable="false" href={smartLink}>
               <Button
                 variant="ghost"
                 className={`w-full justify-start gap-3 h-12 transition-all ${
