@@ -91,17 +91,18 @@ export default async function DashboardPage({
   const workspaceId = selectedWorkspaceId 
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-        <h2 className="text-3xl font-bold tracking-tight text-white">Visão Geral</h2>
-        <div className="flex items-center gap-4">
+    <div className="space-y-6 w-full max-w-full">
+      <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-4 text-center sm:text-left">
+        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">Visão Geral</h2>
+        
+        <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2 sm:gap-4 w-full sm:w-auto">
           <MonthSelector />
           <CreateTransactionDialog workspaceId={workspaceId} />
         </div>
       </div>
       
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="bg-zinc-900 border-zinc-800">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 w-full">
+        <Card className="bg-zinc-900 border-zinc-800 min-w-0">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-zinc-400">Saldo Mensal</CardTitle>
             <DollarSign className="h-4 w-4 text-emerald-500" />
@@ -114,7 +115,7 @@ export default async function DashboardPage({
           </CardContent>
         </Card>
 
-        <Card className="bg-zinc-900 border-zinc-800">
+        <Card className="bg-zinc-900 border-zinc-800 min-w-0">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-zinc-400">Receitas</CardTitle>
             <TrendingUp className="h-4 w-4 text-green-500" />
@@ -127,7 +128,7 @@ export default async function DashboardPage({
           </CardContent>
         </Card>
 
-        <Card className="bg-zinc-900 border-zinc-800">
+        <Card className="bg-zinc-900 border-zinc-800 min-w-0">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-zinc-400">Despesas</CardTitle>
             <TrendingDown className="h-4 w-4 text-red-500" />
@@ -140,7 +141,7 @@ export default async function DashboardPage({
           </CardContent>
         </Card>
 
-        <Card className="bg-zinc-900 border-zinc-800">
+        <Card className="bg-zinc-900 border-zinc-800 min-w-0">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-zinc-400">Atividade</CardTitle>
             <Activity className="h-4 w-4 text-blue-500" />
@@ -153,12 +154,12 @@ export default async function DashboardPage({
         </Card>
       </div>
 
-      <div className="grid gap-4 grid-cols-1 lg:grid-cols-7">
-        <div className="col-span-1 lg:col-span-4">
+      <div className="grid gap-4 grid-cols-1 lg:grid-cols-7 w-full">
+        <div className="col-span-1 lg:col-span-4 min-w-0 w-full">
           <CashFlowChart data={chartData} />
         </div>
 
-        <Card className="col-span-1 lg:col-span-3 bg-zinc-900 border-zinc-800 h-[400px] overflow-y-auto">
+        <Card className="col-span-1 lg:col-span-3 bg-zinc-900 border-zinc-800 h-[400px] overflow-y-auto min-w-0 w-full">
            <CardHeader>
              <CardTitle className="text-white">
                 Transações de {new Date(currentMonth + '-02').toLocaleDateString('pt-BR', { month: 'long' })}

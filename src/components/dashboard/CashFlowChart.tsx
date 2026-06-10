@@ -41,7 +41,7 @@ export function CashFlowChart({ data }: CashFlowChartProps) {
   }
 
   return (
-    <Card className="col-span-4 bg-zinc-900 border-zinc-800 h-[400px]">
+    <Card className="col-span-4 bg-zinc-900 border-zinc-800 h-[400px] overflow-hidden">
       <CardHeader>
         <CardTitle className="text-white">Fluxo de Caixa (Diário)</CardTitle>
       </CardHeader>

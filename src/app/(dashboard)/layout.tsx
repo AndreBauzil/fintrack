@@ -37,17 +37,18 @@ export default async function DashboardLayout({
   const defaultWorkspaceId = workspacesList[0]?.id || ""
 
   return (
-    <div className="flex min-h-screen bg-zinc-950 text-zinc-100">
+    <div className="flex min-h-screen bg-zinc-950 text-zinc-100 overflow-hidden">
       <Sidebar />
-      <div className="flex-1 flex flex-col">
+      
+      <div className="flex-1 flex flex-col min-w-0">
         <DashboardHeader 
           userProfile={profile} 
           workspaces={workspacesList}
-          currentWorkspaceId={defaultWorkspaceId} // Initial value/fallback
+          currentWorkspaceId={defaultWorkspaceId}
         />
 
-        <main className="flex-1 p-6 overflow-auto">
-          <div className="max-w-6xl mx-auto">
+        <main className="flex-1 p-4 sm:p-6 w-full min-w-0 overflow-x-hidden">
+          <div className="max-w-6xl mx-auto w-full min-w-0">
              {children}
           </div>
         </main>

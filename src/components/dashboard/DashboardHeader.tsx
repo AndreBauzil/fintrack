@@ -76,13 +76,13 @@ export function DashboardHeader({ userProfile, workspaces, currentWorkspaceId }:
   ]
 
   return (
-    <header className="h-16 border-b border-zinc-800 bg-zinc-900/50 backdrop-blur-md flex items-center justify-between px-4 md:px-6 sticky top-0 z-50">
+    <header className="h-16 border-b border-zinc-800 bg-zinc-900/50 backdrop-blur-md flex items-center justify-between px-4 md:px-6 sticky top-0 z-50 w-full max-w-full">
       
       {/* LEFT SIDE: Mobile Menu + Selector */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3 flex-1 w-full">
         <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="md:hidden text-zinc-400 hover:text-white">
+        <SheetTrigger asChild>
+            <Button variant="ghost" size="icon" className="lg:hidden text-zinc-400 hover:text-white shrink-0">
               <Menu size={24} />
             </Button>
           </SheetTrigger>
@@ -147,10 +147,11 @@ export function DashboardHeader({ userProfile, workspaces, currentWorkspaceId }:
           </SheetContent>
         </Sheet>
 
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-zinc-400 hidden lg:inline">Carteira:</span>
+        {/* Seletor */}
+        <div className="flex items-center gap-2 flex-1 w-full">
+          <span className="text-sm text-zinc-400 hidden lg:inline shrink-0">Carteira:</span>
           <Select key={activeValue} value={activeValue} onValueChange={handleWorkspaceChange}>
-            <SelectTrigger className="w-40 md:w-[200px] bg-zinc-950 border-zinc-700 text-white h-9 focus:ring-emerald-500/20">
+            <SelectTrigger className="w-[140px] sm:w-[200px] bg-zinc-950 border-zinc-700 text-white h-9 focus:ring-emerald-500/20 shrink-0">
               <SelectValue placeholder="Selecione" />
             </SelectTrigger>
             <SelectContent className="bg-zinc-900 border-zinc-800 text-white">
@@ -160,7 +161,12 @@ export function DashboardHeader({ userProfile, workspaces, currentWorkspaceId }:
             </SelectContent>
           </Select>
 
-          <Button variant="ghost" size="icon" onClick={togglePrivacyMode} className="text-zinc-400 hover:text-white">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={togglePrivacyMode} 
+            className="ml-auto md:ml-0 text-zinc-400 hover:text-white shrink-0"
+          >
             {isPrivate ? <EyeOff size={20} /> : <Eye size={20} />}
           </Button>
         </div>

@@ -24,12 +24,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-zinc-950 text-white antialiased`}
       >
         <PrivacyProvider>
-          {children}
+          <div className="flex flex-col min-h-screen overflow-x-hidden w-full max-w-[100vw]">
+            {children}
+          </div>
         </PrivacyProvider>
       </body>
     </html>

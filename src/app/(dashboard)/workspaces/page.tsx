@@ -49,15 +49,16 @@ export default async function WorkspacesPage() {
   )
 
   return (
-    <div className="space-y-8 max-w-4xl mx-auto pb-10">
-      
-      {/* Header */}
-      <div className="flex items-center justify-between">
+    <div className="space-y-8 mx-auto pb-10 w-full max-w-full">
+      <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-4 text-center sm:text-left">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight text-white">Minhas Carteiras</h2>
-          <p className="text-zinc-400">Você participa de {workspacesData.length} carteira(s).</p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">Minhas Carteiras</h2>
+          <p className="text-sm text-zinc-400 mt-1">Você participa de {workspacesData.length} carteira(s).</p>
         </div>
-        {workspacesData.length < 2 && <CreateWorkspaceDialog />}
+        
+        <div className="flex w-full sm:w-auto justify-center sm:justify-end">
+          {workspacesData.length < 2 && <CreateWorkspaceDialog />}
+        </div>
       </div>
 
       {/* Card for EACH wallet */}

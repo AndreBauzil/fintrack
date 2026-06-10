@@ -44,20 +44,24 @@ export default async function TransactionsPage({
     .lte('date', endDate)
     .order('date', { ascending: false })
 
-  return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight text-white">Transações</h2>
-          <p className="text-zinc-400">Gerencie suas entradas e saídas.</p>
+    return (
+      <div className="space-y-6 w-full min-w-0 pb-8">
+          
+        <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-4 text-center sm:text-left">
+          <div>
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">Transações</h2>
+            <p className="text-sm text-zinc-400 mt-1">Gerencie suas entradas e saídas.</p>
+          </div>
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2 w-full sm:w-auto">
+            <MonthSelector />
+            <CreateTransactionDialog workspaceId={selectedWorkspaceId} />
+          </div>
         </div>
-        <div className="flex items-center gap-4">
-          <MonthSelector />
-          <CreateTransactionDialog workspaceId={selectedWorkspaceId} />
+    
+        <div className="w-full min-w-0">
+          <TransactionList transactions={transactions || []} />
         </div>
+          
       </div>
-
-      <TransactionList transactions={transactions || []} />
-    </div>
-  )
-}
+    ) 
+  }

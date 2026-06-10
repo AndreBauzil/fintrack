@@ -43,12 +43,11 @@ export function TransactionList({ transactions }: { transactions: Transaction[] 
     }
   }
 
-  const formatMoney = (val: number) => 
-    new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val)
-
   return (
-    <div className="rounded-md border border-zinc-800 bg-zinc-900">
-      <Table>
+    // Colocamos o overflow-hidden na borda externa
+    <div className="rounded-md border border-zinc-800 bg-zinc-900 w-full overflow-hidden">
+      <div className="w-full overflow-x-auto">
+        <Table className="w-full">
         <TableHeader>
           <TableRow className="border-zinc-800 hover:bg-zinc-900">
             <TableHead className="text-zinc-400">Descrição</TableHead>
@@ -58,6 +57,7 @@ export function TransactionList({ transactions }: { transactions: Transaction[] 
             <TableHead className="w-[50px]"></TableHead>
           </TableRow>
         </TableHeader>
+        
         <TableBody>
           {transactions.map((t) => (
              <TableRow key={t.id} className="border-zinc-800 hover:bg-zinc-900/50 h-16 transition-colors">
@@ -111,7 +111,8 @@ export function TransactionList({ transactions }: { transactions: Transaction[] 
             </TableRow>
           ))}
         </TableBody>
-      </Table>
+       </Table>
+      </div>
     </div>
   )
 }
