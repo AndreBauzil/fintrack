@@ -1,4 +1,5 @@
-import { login, signup, demoLogin } from './actions' // Importamos o demoLogin aqui
+import { DemoButton } from '@/components/login/DemoButton'
+import { login, signup, demoLogin } from './actions' 
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -7,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { PasswordInput } from '@/components/ui/password-input'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-import { WalletCards, ArrowRight, UserCircle2 } from "lucide-react" // Adicionei o ícone UserCircle2
+import { WalletCards, ArrowRight } from "lucide-react" 
 
 interface LoginPageProps {
   searchParams: Promise<{ message?: string; tab?: string }>
@@ -77,7 +78,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
                       id="email" 
                       name="email" 
                       type="email" 
-                      placeholder="exemplo@fintrack.com" 
+                      placeholder="seu@melhoremail.com" 
                       required 
                       className={inputStyles} 
                     />
@@ -117,14 +118,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
                     </div>
                   </div>
 
-                    <Button 
-                      formAction={demoLogin} 
-                      formNoValidate
-                      variant="outline"
-                      className="w-full border-zinc-700 text-zinc-300 hover:bg-zinc-800 hover:text-white h-11 transition-all"
-                    >
-                    <UserCircle2 className="w-4 h-4 mr-2" /> Entrar como Visitante
-                  </Button>
+                  <DemoButton action={demoLogin} />
                 </CardFooter>
               </form>
             </Card>
@@ -146,7 +140,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
                     <Input 
                       id="fullName" 
                       name="fullName" 
-                      placeholder="Ex: Andre Bauzil" 
+                      placeholder="Ex: Seu Lindo Nome" 
                       required 
                       className={inputStyles} 
                     />
